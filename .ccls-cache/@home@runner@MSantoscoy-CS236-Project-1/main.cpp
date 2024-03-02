@@ -188,16 +188,15 @@ void findOptimal(Jobs *job, Jobs *Optimal, int & jbs)
 
   //loop to run through all available jobs
   for(int i =1; i < MAX_JOBS; i++)
-    {
-      //If next job is not overlapping with the last job in the optimal schedule, add it to the optimal schedule
+  {
+    //If next job is not overlapping with the last job in the optimal schedule, add it to the optimal schedule
       if(Optimal[jbs].getEndTime() <= job[i].getStartTime())
       {
         Optimal[jbs] = job[i];
         jbs++;
-
       }
       // If next job is overlapping with the last job in the optimal schedule, check if it is better than the last job in the optimal schedule
-     if (Optimal[jbs].getStartTime() >= job[i].getStartTime())
+    if (Optimal[jbs].getStartTime() >= job[i].getStartTime())
         {
           //Find total time for current optimal job
         int jobTimeOpt= Optimal[jbs].getEndTime()- Optimal[jbs].getStartTime();
@@ -212,6 +211,8 @@ void findOptimal(Jobs *job, Jobs *Optimal, int & jbs)
           } // end if
 
         } //end if
+  }//end for
+  
 }
 
 //Calculate max profit
@@ -223,4 +224,5 @@ void findProfit(Jobs *job, int & jbsOpt)
       profit += job[i].getWeight();
     }
   cout << "\nThe profit is: " << profit << endl;
-}
+  
+};
