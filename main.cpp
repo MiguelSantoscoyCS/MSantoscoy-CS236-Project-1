@@ -1,3 +1,4 @@
+#include "Jobs.h"
 #include <iostream>
 #include <cstdlib>
 #include <vector>
@@ -6,25 +7,6 @@
 
 using namespace std;
 
-class Jobs{
-public:
-Jobs ();
-Jobs (int n, int m, int k, string j);
-int getStartTime();
-int getEndTime();
-string getName();
-int getWeight();
-void printDet(); //print job Details
-
-void findProfit();
-
-private:
-string name;
-int weight;
-int startTime;
-int endTime;
-
-};
 
 // __________ Function Protos__________
 
@@ -74,7 +56,7 @@ createJobs(job);
 
   cout<< "\nThere are "<< optimalCount << " jobs in the optimal schedule.\n" <<"The optimal schedule is: "<< "\nJob Name " << setw(15)
      <<"Start Time " << setw(15) << "End Time " << setw(15) << " Weight "  << endl;
-  for (int i = 0; i < optimalCount; i++)
+  for (int i = 0; i < optimalCount + 1; i++)
   {
     jobOpt[i].printDet();
   }
@@ -89,50 +71,7 @@ createJobs(job);
   return 0;
 }
 
-//________Class Function Definitions________
 
-//default construcor
-Jobs::Jobs()
-{
-  weight = 0;
-  startTime= 0;
-  endTime = 0;
-  name = "null";
-}
-
-Jobs::Jobs(int n, int m, int k, string j)
-{
-  weight = n;
-  startTime = m;
-  endTime = k;
-  name= j;
-}
-
-int Jobs::getStartTime()
-{
-  return startTime;
-}
-
-int Jobs::getEndTime()
-{
-  return endTime;
-}
-
-string Jobs::getName()
-{
-  return name;
-}
-
-int Jobs::getWeight()
-{
-  return weight;
-}
-
-
-void Jobs::printDet()
-{
-  cout << name << setw(15) << startTime << setw(15) << endTime << setw(15) << weight << endl;
-}
 
 //_________Function Defintions__________
 
@@ -184,16 +123,15 @@ void findOptimal(Jobs *job, Jobs *Optimal, int & jbs)
 {
   //Assign first element to optimal jobs
   Optimal[jbs] = job[0];
-  jbs++;
 
   //loop to run through all available jobs
-  for(int i =1; i < MAX_JOBS; i++)
+  for(int i =0; i < MAX_JOBS; i++)
   {
     //If next job is not overlapping with the last job in the optimal schedule, add it to the optimal schedule
       if(Optimal[jbs].getEndTime() <= job[i].getStartTime())
       {
-        Optimal[jbs] = job[i];
         jbs++;
+        Optimal[jbs] = job[i];
       }
       // If next job is overlapping with the last job in the optimal schedule, check if it is better than the last job in the optimal schedule
     if (Optimal[jbs].getStartTime() >= job[i].getStartTime())
