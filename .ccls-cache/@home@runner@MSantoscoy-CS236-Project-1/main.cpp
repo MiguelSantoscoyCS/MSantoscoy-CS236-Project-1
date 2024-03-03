@@ -16,16 +16,11 @@ void findOptimal(Jobs *n, Jobs *Optimal, int & jbsOpt);
 
 void findProfit(Jobs *n, int & jbsOpt);
 
-//void printDet(Jobs* n);
 //_____________________________________
 
+//const to set limit of jobs
 int const  MAX_JOBS=6;
 
-/*
-Things to still fix before submission:
-1. Check the logic for the optimal jobs. They must be non overlapping, current logic does not make the distinction for non-overlapping jobs
-2. Make sure you split up the implementation files
-  */
 int main() {
  cout << "We will create "<< MAX_JOBS<< " jobs and then sort them by finish time." << endl;
 
@@ -54,7 +49,7 @@ createJobs(job);
 
   findOptimal(job, jobOpt, optimalCount);
 
-  cout<< "\nThere are "<< optimalCount << " jobs in the optimal schedule.\n" <<"The optimal schedule is: "<< "\nJob Name " << setw(15)
+  cout<< "\nThere are "<< optimalCount + 1 << " jobs in the optimal schedule.\n" <<"The optimal schedule is: "<< "\nJob Name " << setw(15)
      <<"Start Time " << setw(15) << "End Time " << setw(15) << " Weight "  << endl;
   for (int i = 0; i < optimalCount + 1; i++)
   {
@@ -70,7 +65,6 @@ createJobs(job);
 
   return 0;
 }
-
 
 
 //_________Function Defintions__________
@@ -89,24 +83,26 @@ void createJobs(Jobs *job)
       //while loop to check for valid input
       while (startTime < 0 || startTime > 24 || endTime < 0 || endTime > 24 || startTime > endTime)
         {
+          //start time out of range
           if (startTime < 0 || startTime > 24)
           {
-            cout << "Invalid START time! Please enter a start time between 0 and 24." << endl;
+            cout << "Invalid START time! Please enter a start time between 0 and 24 for "<< name << "." << endl;
           cin >> startTime;
           }
+            //end time out of range
           else if (endTime > 24 || endTime < 0)
           {
-            cout << "Invalid END time! Please enter an END time between 0 and 24." << endl;
-
+            cout << "Invalid END time! Please enter an END time between 0 and 24 for "<< name << "." << endl;
             cin>> endTime;
           }
+            //start time after end time
           else if (startTime > endTime)
 
           {
-            cout << "Invalid START/END times! Please enter an END time that is greater than the START time." << "\nPlease enter a START time: ";
+            cout << "Invalid START/END times! Please enter an END time that is greater than the START time." << "\nPlease enter a START time for "<< name << "." << endl;
             cin >> startTime;
 
-              cout << "Please enter an END time: ";
+              cout << "Please enter an END time for "<< name << "." << endl;
             cin>> endTime;
 
           }
@@ -134,7 +130,7 @@ void findOptimal(Jobs *job, Jobs *Optimal, int & jbs)
         Optimal[jbs] = job[i];
       }
       // If next job is overlapping with the last job in the optimal schedule, check if it is better than the last job in the optimal schedule
-    if (Optimal[jbs].getStartTime() >= job[i].getStartTime())
+    if (Optimal[jbs].getStartTime() == job[i].getStartTime())
         {
           //Find total time for current optimal job
         int jobTimeOpt= Optimal[jbs].getEndTime()- Optimal[jbs].getStartTime();
@@ -142,7 +138,7 @@ void findOptimal(Jobs *job, Jobs *Optimal, int & jbs)
           //find total time for new job
           int jobTimeTemp= job[i].getEndTime()- job[i].getStartTime();
 
-          //if new job is better than the last job in the optimal schedule, replace the last job in the optimal schedule with
+          //if new job is better than the last job in the optimal schedule, replace the last job in the optimal schedule with new job
           if (jobTimeOpt < jobTimeTemp && Optimal[jbs].getWeight() <= job[i].getWeight())
           {
             Optimal[jbs] = job[i];
@@ -157,7 +153,7 @@ void findOptimal(Jobs *job, Jobs *Optimal, int & jbs)
 void findProfit(Jobs *job, int & jbsOpt)
 {
   int profit = 0;
-  for(int i = 0; i < jbsOpt; i++)
+  for(int i = 0; i < jbsOpt + 1; i++)
     {
       profit += job[i].getWeight();
     }
